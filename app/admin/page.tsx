@@ -11,6 +11,7 @@ import { formatDate } from "@/lib/format"
 import { baseUrl } from "@/lib/url"
 import { AddClientForm } from "@/components/add-client-form"
 import { ClientRow } from "@/components/client-row"
+import { ClientModalScope } from "@/components/client-modal-scope"
 import { CreateUserForm } from "@/components/create-user-form"
 import { DeleteUserButton } from "@/components/delete-user-button"
 import type { Client, OwnerProfile } from "@/lib/types"
@@ -196,7 +197,8 @@ export default async function AdminPage({
                   : "No clients yet. Add one from the Add client tab, or let an owner onboard their own."}
               </p>
             ) : (
-              <div className="overflow-x-auto border border-border bg-card">
+              <ClientModalScope>
+                <div className="overflow-x-auto border border-border bg-card">
                 <table className="w-full border-collapse text-left">
                   <thead>
                     <tr className="text-xs tracking-widest text-muted-foreground uppercase">
@@ -240,7 +242,8 @@ export default async function AdminPage({
                     {pager}
                   </div>
                 )}
-              </div>
+                </div>
+              </ClientModalScope>
             )}
           </section>
         </>

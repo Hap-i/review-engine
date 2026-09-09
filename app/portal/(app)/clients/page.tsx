@@ -1,6 +1,7 @@
 import { getOwnedClients, requireOwner } from "@/lib/portal"
 import { baseUrl } from "@/lib/url"
 import { ClientRow } from "@/components/client-row"
+import { ClientModalScope } from "@/components/client-modal-scope"
 import { AddClientForm } from "@/components/add-client-form"
 import {
   deleteOwnClient,
@@ -17,7 +18,7 @@ export default async function PortalClientsPage() {
   )
 
   return (
-    <>
+    <ClientModalScope>
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">My clients</h1>
@@ -83,6 +84,6 @@ export default async function PortalClientsPage() {
           your admin to raise it.
         </p>
       )}
-    </>
+    </ClientModalScope>
   )
 }

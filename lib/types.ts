@@ -52,7 +52,27 @@ export type ClientFormAction = (
 
 export type DeleteAction = (clientId: string) => Promise<DeleteResult>
 
-export type ReviewFetchAction = (clientId: string) => Promise<ClientReview[]>
+/** Rating + tags only (no review text) — light enough to load for the whole history. */
+export type ClientReviewStats = {
+  rating: number
+  tags?: string[] | null
+}
+
+/**
+ * One page of a client's review history. `reviews` is a slice (newest first);
+ * `ratings` covers the entire history but carries no text, so the client can
+ * compute an accurate average and tag insight without loading every message.
+ */
+export type ReviewPage = {
+  reviews: ClientReview[]
+  ratings: ClientReviewStats[]
+  hasMore: boolean
+}
+
+export type ReviewFetchAction = (
+  clientId: string,
+  offset?: number
+) => Promise<ReviewPage>
 
 /** Save the full ordered tag list for a client (owner portal). */
 export type TagSaveAction = (clientId: string, tags: string[]) => Promise<DeleteResult>

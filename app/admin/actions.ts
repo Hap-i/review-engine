@@ -11,7 +11,13 @@ import {
   uniqueSlug,
   validateClientFields,
 } from "@/lib/client-helpers"
-import type { ClientFormState, ClientReview, DeleteResult } from "@/lib/types"
+import type {
+  ClientFormState,
+  ClientReview,
+  ClientReviewStats,
+  DeleteResult,
+  ReviewPage,
+} from "@/lib/types"
 
 export type CreateClientState = ClientFormState
 export type UpdateClientState = ClientFormState
@@ -159,27 +165,47 @@ export async function deleteClient(
   return { success: true }
 }
 
-/** Return a client's most recent reviews for the expanded row. */
+const REVIEWS_PAGE_SIZE = 20
+
+/**
+ * Return a client's review history for the expanded row: one page of full
+ * reviews (text) plus the whole history's rating/tag stats (no text) so the UI
+ * can show an accurate average and tag insight without loading every message.
+ */
 export async function getClientReviews(
-  clientId: string
-): Promise<ClientReview[]> {
+  clientId: string,
+  offset = 0
+): Promise<ReviewPage> {
+  const empty: ReviewPage = { reviews: [], ratings: [], hasMore: false }
   if (!(await isAuthorized())) {
-    return []
+    return empty
   }
 
   const supabase = getSupabaseAdmin()
-  const { data, error } = await supabase
-    .from("reviews")
-    .select("id, client_id, rating, review_text, created_at, tags")
-    .eq("client_id", clientId)
-    .order("created_at", { ascending: false })
+  const [pageRes, statsRes] = await Promise.all([
+    supabase
+      .from("reviews")
+      .select("id, client_id, rating, review_text, created_at, tags")
+      .eq("client_id", clientId)
+      .order("created_at", { ascending: false })
+      .range(offset, offset + REVIEWS_PAGE_SIZE - 1),
+    supabase
+      .from("reviews")
+      .select("rating, tags")
+      .eq("client_id", clientId),
+  ])
 
-  if (error) {
-    console.error("getClientReviews select failed", error)
-    return []
+  if (pageRes.error || statsRes.error) {
+    console.error("getClientReviews select failed", pageRes.error, statsRes.error)
+    return empty
   }
 
-  return (data ?? []) as ClientReview[]
+  const reviews = (pageRes.data ?? []) as ClientReview[]
+  return {
+    reviews,
+    ratings: (statsRes.data ?? []) as ClientReviewStats[],
+    hasMore: reviews.length === REVIEWS_PAGE_SIZE,
+  }
 }
 
 /**

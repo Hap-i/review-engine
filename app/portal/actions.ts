@@ -16,7 +16,13 @@ import {
   uniqueSlug,
   validateClientFields,
 } from "@/lib/client-helpers"
-import type { ClientFormState, ClientReview, DeleteResult } from "@/lib/types"
+import type {
+  ClientFormState,
+  ClientReview,
+  ClientReviewStats,
+  DeleteResult,
+  ReviewPage,
+} from "@/lib/types"
 
 export type LoginState = {
   error?: string
@@ -195,23 +201,40 @@ export async function deleteOwnClient(clientId: string): Promise<DeleteResult> {
   return { success: true }
 }
 
-/** Recent reviews for a client the owner manages (for the expanded row). */
+const REVIEWS_PAGE_SIZE = 20
+
+/** Review history for one of the owner's clients (see getClientReviews). */
 export async function getOwnClientReviews(
-  clientId: string
-): Promise<ClientReview[]> {
+  clientId: string,
+  offset = 0
+): Promise<ReviewPage> {
+  const empty: ReviewPage = { reviews: [], ratings: [], hasMore: false }
   const owner = await getPortalOwner()
-  if (!owner) return []
+  if (!owner) return empty
 
   const supabase = getSupabaseAdmin()
-  if (!(await isOwnedBy(supabase, clientId, owner.id))) return []
+  if (!(await isOwnedBy(supabase, clientId, owner.id))) return empty
 
-  const { data, error } = await supabase
-    .from("reviews")
-    .select("id, client_id, rating, review_text, created_at, tags")
-    .eq("client_id", clientId)
-    .order("created_at", { ascending: false })
-  if (error) return []
-  return (data ?? []) as ClientReview[]
+  const [pageRes, statsRes] = await Promise.all([
+    supabase
+      .from("reviews")
+      .select("id, client_id, rating, review_text, created_at, tags")
+      .eq("client_id", clientId)
+      .order("created_at", { ascending: false })
+      .range(offset, offset + REVIEWS_PAGE_SIZE - 1),
+    supabase
+      .from("reviews")
+      .select("rating, tags")
+      .eq("client_id", clientId),
+  ])
+  if (pageRes.error || statsRes.error) return empty
+
+  const reviews = (pageRes.data ?? []) as ClientReview[]
+  return {
+    reviews,
+    ratings: (statsRes.data ?? []) as ClientReviewStats[],
+    hasMore: reviews.length === REVIEWS_PAGE_SIZE,
+  }
 }
 
 /**
