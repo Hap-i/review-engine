@@ -1,12 +1,13 @@
 import type { Metadata } from "next"
-import type { ReactNode } from "react"
 import { RiArrowRightLine, RiMailLine } from "@remixicon/react"
 
 import {
   Bullets,
+  ContactRow,
   LegalPage,
   P,
   Steps,
+  Strong,
   type LegalSection,
 } from "@/components/marketing/legal"
 import {
@@ -24,29 +25,6 @@ export const metadata: Metadata = {
 }
 
 const LAST_UPDATED = "September 10, 2026"
-
-/** Emphasised defined term inside document prose. */
-function Strong({ children }: { children: ReactNode }) {
-  return <strong className="font-medium text-foreground">{children}</strong>
-}
-
-/** A label/value row inside the contact block. */
-function ContactRow({
-  label,
-  children,
-}: {
-  label: string
-  children: ReactNode
-}) {
-  return (
-    <div className="flex flex-col gap-1 border-t border-border pt-3 first:border-t-0 first:pt-0 sm:flex-row sm:gap-4">
-      <span className="w-44 shrink-0 font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-        {label}
-      </span>
-      <span className="text-foreground">{children}</span>
-    </div>
-  )
-}
 
 const SECTIONS: LegalSection[] = [
   {
@@ -91,7 +69,9 @@ const SECTIONS: LegalSection[] = [
           You must be legally capable of entering into a binding contract in
           your jurisdiction to use the Service.
         </P>
-        <P>If you use the Service on behalf of a Business, you represent that:</P>
+        <P>
+          If you use the Service on behalf of a Business, you represent that:
+        </P>
         <Steps
           items={[
             "you have authority to accept these Terms on its behalf;",
@@ -133,8 +113,8 @@ const SECTIONS: LegalSection[] = [
         </P>
         <P>
           We may suspend or restrict an account where reasonably necessary to
-          protect the Service, our users, third parties, or to address
-          suspected violations of these Terms or applicable law.
+          protect the Service, our users, third parties, or to address suspected
+          violations of these Terms or applicable law.
         </P>
       </>
     ),
@@ -175,9 +155,9 @@ const SECTIONS: LegalSection[] = [
           ]}
         />
         <P>
-          We reserve the right to investigate suspected misuse and to suspend
-          or terminate accounts where we reasonably believe these Terms,
-          applicable law, or third-party platform policies have been violated.
+          We reserve the right to investigate suspected misuse and to suspend or
+          terminate accounts where we reasonably believe these Terms, applicable
+          law, or third-party platform policies have been violated.
         </P>
       </>
     ),
@@ -242,8 +222,8 @@ const SECTIONS: LegalSection[] = [
         </P>
         <P>
           Onloz is intended to assist a customer in expressing their own
-          experience. AI Content should not be treated as an independent
-          factual account of an event.
+          experience. AI Content should not be treated as an independent factual
+          account of an event.
         </P>
         <P>
           Businesses and customers are responsible for reviewing AI Content
@@ -278,8 +258,8 @@ const SECTIONS: LegalSection[] = [
           publishing that content remains responsible for the content.
         </P>
         <P>
-          Onloz does not become the author of a customer’s review merely
-          because the Service assisted in drafting or formatting it.
+          Onloz does not become the author of a customer’s review merely because
+          the Service assisted in drafting or formatting it.
         </P>
         <P>
           You are responsible for ensuring that content submitted through your
@@ -332,8 +312,8 @@ const SECTIONS: LegalSection[] = [
           ]}
         />
         <P>
-          Your use of a Third-Party Service is governed by that provider’s
-          terms and policies.
+          Your use of a Third-Party Service is governed by that provider’s terms
+          and policies.
         </P>
         <P>
           You acknowledge that a third-party platform may remove, hide, filter,
@@ -381,8 +361,8 @@ const SECTIONS: LegalSection[] = [
       <>
         <P>Certain features may require a paid subscription.</P>
         <P>
-          Prices, billing intervals, included usage, and available features
-          will be presented at the time of purchase or within the Service.
+          Prices, billing intervals, included usage, and available features will
+          be presented at the time of purchase or within the Service.
         </P>
         <P>Unless otherwise stated:</P>
         <Bullets
@@ -422,8 +402,8 @@ const SECTIONS: LegalSection[] = [
           ]}
         />
         <P>
-          We will provide any legally required information regarding renewal
-          and charges.
+          We will provide any legally required information regarding renewal and
+          charges.
         </P>
       </>
     ),
@@ -448,9 +428,9 @@ const SECTIONS: LegalSection[] = [
           material legal, security, or operational risk.
         </P>
         <P>
-          Where reasonably practicable, we may provide notice and an
-          opportunity to remedy a violation before termination, except where
-          immediate action is reasonably necessary.
+          Where reasonably practicable, we may provide notice and an opportunity
+          to remedy a violation before termination, except where immediate
+          action is reasonably necessary.
         </P>
       </>
     ),
@@ -469,9 +449,9 @@ const SECTIONS: LegalSection[] = [
           withdrawal, or other right that cannot legally be excluded.
         </P>
         <P>
-          For business customers purchasing the Service for commercial
-          purposes, refunds may be limited to the circumstances expressly
-          stated in your order or subscription terms.
+          For business customers purchasing the Service for commercial purposes,
+          refunds may be limited to the circumstances expressly stated in your
+          order or subscription terms.
         </P>
       </>
     ),
@@ -520,14 +500,14 @@ const SECTIONS: LegalSection[] = [
       <>
         <P>
           To provide certain features, Onloz may use third-party infrastructure
-          and technology providers, including cloud hosting providers,
-          analytics providers, payment processors, communications providers,
-          and artificial-intelligence providers.
+          and technology providers, including cloud hosting providers, analytics
+          providers, payment processors, communications providers, and
+          artificial-intelligence providers.
         </P>
         <P>
           Information may be processed by these providers as necessary to
-          provide the Service, subject to applicable contractual, technical,
-          and legal safeguards.
+          provide the Service, subject to applicable contractual, technical, and
+          legal safeguards.
         </P>
         <P>
           Our Privacy Policy provides additional information regarding personal
@@ -547,10 +527,10 @@ const SECTIONS: LegalSection[] = [
           information is lawful.
         </P>
         <P>
-          Depending on the circumstances, the Business may act as the
-          controller or equivalent responsible party for personal information
-          collected from its customers, while Onloz may process such
-          information on the Business’s behalf.
+          Depending on the circumstances, the Business may act as the controller
+          or equivalent responsible party for personal information collected
+          from its customers, while Onloz may process such information on the
+          Business’s behalf.
         </P>
         <P>You must:</P>
         <Bullets
@@ -564,8 +544,7 @@ const SECTIONS: LegalSection[] = [
           ]}
         />
         <P>
-          Our Privacy Policy describes how Onloz processes personal
-          information.
+          Our Privacy Policy describes how Onloz processes personal information.
         </P>
         <P>
           Where a separate Data Processing Agreement (“DPA”) is offered or
@@ -580,8 +559,8 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <P>
-          We implement reasonable technical and organizational measures
-          designed to protect information processed through the Service.
+          We implement reasonable technical and organizational measures designed
+          to protect information processed through the Service.
         </P>
         <P>
           However, no internet service, transmission method, storage system, or
@@ -689,8 +668,8 @@ const SECTIONS: LegalSection[] = [
           ]}
         />
         <P>
-          Beta features are provided on an “as available” basis unless
-          otherwise stated.
+          Beta features are provided on an “as available” basis unless otherwise
+          stated.
         </P>
       </>
     ),
@@ -746,8 +725,8 @@ const SECTIONS: LegalSection[] = [
         />
         <P>Upon termination, your right to use the Service ends.</P>
         <P>
-          Unless required by law or otherwise agreed, we may delete account
-          data after termination in accordance with our retention practices and
+          Unless required by law or otherwise agreed, we may delete account data
+          after termination in accordance with our retention practices and
           Privacy Policy.
         </P>
       </>
@@ -761,10 +740,9 @@ const SECTIONS: LegalSection[] = [
         <P>
           To the extent permitted by applicable law, if you use the Service for
           business purposes, you agree to defend, indemnify, and hold harmless
-          Onloz and its officers, directors, employees, contractors, and
-          service providers from claims, losses, liabilities, damages, costs,
-          and expenses (including reasonable legal fees) arising from or
-          related to:
+          Onloz and its officers, directors, employees, contractors, and service
+          providers from claims, losses, liabilities, damages, costs, and
+          expenses (including reasonable legal fees) arising from or related to:
         </P>
         <Bullets
           items={[
@@ -781,8 +759,8 @@ const SECTIONS: LegalSection[] = [
         />
         <P>
           This section does not apply to the extent that a claim results from
-          Onloz’s own gross negligence, willful misconduct, or other conduct
-          for which liability cannot lawfully be excluded.
+          Onloz’s own gross negligence, willful misconduct, or other conduct for
+          which liability cannot lawfully be excluded.
         </P>
       </>
     ),
@@ -797,8 +775,8 @@ const SECTIONS: LegalSection[] = [
           provided on an “as is” and “as available” basis.
         </P>
         <P>
-          We disclaim warranties that cannot lawfully be excluded, and
-          otherwise disclaim warranties including implied warranties of:
+          We disclaim warranties that cannot lawfully be excluded, and otherwise
+          disclaim warranties including implied warranties of:
         </P>
         <Bullets
           items={[
@@ -894,8 +872,8 @@ const SECTIONS: LegalSection[] = [
           rights that cannot legally be excluded, restricted, or waived.
         </P>
         <P>
-          Where mandatory consumer law conflicts with these Terms, the
-          mandatory law will prevail to the extent of the conflict.
+          Where mandatory consumer law conflicts with these Terms, the mandatory
+          law will prevail to the extent of the conflict.
         </P>
       </>
     ),
@@ -910,13 +888,12 @@ const SECTIONS: LegalSection[] = [
           countries.
         </P>
         <P>
-          You are responsible for ensuring that your use of the Service
-          complies with laws applicable to you, your Business, and your
-          customers.
+          You are responsible for ensuring that your use of the Service complies
+          with laws applicable to you, your Business, and your customers.
         </P>
         <P>
-          We make no representation that the Service is appropriate or
-          available for use in every jurisdiction.
+          We make no representation that the Service is appropriate or available
+          for use in every jurisdiction.
         </P>
       </>
     ),
@@ -958,9 +935,8 @@ const SECTIONS: LegalSection[] = [
           updated Terms.
         </P>
         <P>
-          Your continued use of the Service after the effective date
-          constitutes acceptance of the updated Terms to the extent permitted
-          by law.
+          Your continued use of the Service after the effective date constitutes
+          acceptance of the updated Terms to the extent permitted by law.
         </P>
       </>
     ),
@@ -971,8 +947,8 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <P>
-          By using the Service, you consent to receive electronic
-          communications from us relating to:
+          By using the Service, you consent to receive electronic communications
+          from us relating to:
         </P>
         <Bullets
           items={[
@@ -986,8 +962,8 @@ const SECTIONS: LegalSection[] = [
           ]}
         />
         <P>
-          Marketing communications are subject to applicable consent and
-          opt-out requirements.
+          Marketing communications are subject to applicable consent and opt-out
+          requirements.
         </P>
       </>
     ),
@@ -999,8 +975,8 @@ const SECTIONS: LegalSection[] = [
       <>
         <P>
           You may not assign or transfer your rights or obligations under these
-          Terms without our prior written consent, except where such
-          restriction is prohibited by law.
+          Terms without our prior written consent, except where such restriction
+          is prohibited by law.
         </P>
         <P>
           We may assign or transfer these Terms in connection with a merger,
@@ -1112,8 +1088,9 @@ export default function TermsPage() {
             In that case, “you” includes both you and the entity you represent.
           </P>
           <P>
-            <Strong>If you do not agree to these Terms, you must not use the
-            Service.</Strong>
+            <Strong>
+              If you do not agree to these Terms, you must not use the Service.
+            </Strong>
           </P>
         </>
       }

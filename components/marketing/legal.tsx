@@ -4,6 +4,7 @@ import { RiShieldCheckLine } from "@remixicon/react"
 import { MarketingNav } from "@/components/marketing/nav"
 import { MarketingFooter } from "@/components/marketing/footer"
 import { Container } from "@/components/marketing/primitives"
+import { cn } from "@/lib/utils"
 
 /* Shared shell for the legal documents (terms, privacy, policies). */
 
@@ -12,13 +13,41 @@ export type LegalSection = {
   id: string
   /** Section heading as it appears in the document. */
   title: string
-  /** Section body, composed from <P>, <Bullets> and <Steps>. */
+  /** Section body, composed from <P>, <Bullets>, <Steps> and <Example>. */
   body: ReactNode
 }
 
 /** A paragraph of document prose. */
 export function P({ children }: { children: ReactNode }) {
   return <p>{children}</p>
+}
+
+/** Emphasised defined term inside document prose. */
+export function Strong({ children }: { children: ReactNode }) {
+  return <strong className="font-medium text-foreground">{children}</strong>
+}
+
+/** Sub-heading introducing a group of paragraphs inside one section. */
+export function Lead({ children }: { children: ReactNode }) {
+  return <p className="font-medium text-foreground">{children}</p>
+}
+
+/** A label/value row inside a contact block. */
+export function ContactRow({
+  label,
+  children,
+}: {
+  label: string
+  children: ReactNode
+}) {
+  return (
+    <div className="flex flex-col gap-1 border-t border-border pt-3 first:border-t-0 first:pt-0 sm:flex-row sm:gap-4">
+      <span className="w-44 shrink-0 font-mono text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
+        {label}
+      </span>
+      <span className="text-foreground">{children}</span>
+    </div>
+  )
 }
 
 /** Unordered list with a hairline marker, matching the marketing language. */
@@ -46,7 +75,7 @@ export function Steps({ items }: { items: ReactNode[] }) {
         <li key={i} className="flex gap-3">
           <span
             aria-hidden
-            className="w-4 shrink-0 pt-px font-mono text-[11px] tabular-nums text-muted-foreground/60"
+            className="w-4 shrink-0 pt-px font-mono text-[11px] text-muted-foreground/60 tabular-nums"
           >
             {i + 1}.
           </span>
@@ -54,6 +83,53 @@ export function Steps({ items }: { items: ReactNode[] }) {
         </li>
       ))}
     </ol>
+  )
+}
+
+/**
+ * Quoted example inside document prose — a sample message, prompt or
+ * snippet from the customer-facing flow.
+ */
+export function Example({
+  children,
+  label,
+  tone = "neutral",
+}: {
+  children: ReactNode
+  /** Short caption, e.g. "Appropriate" or "Customer input". */
+  label?: string
+  /** `avoid` sets a counter-example apart with a muted rule and italic text. */
+  tone?: "neutral" | "avoid"
+}) {
+  const avoid = tone === "avoid"
+
+  return (
+    <figure
+      className={cn(
+        "border-l-2 pl-5",
+        avoid ? "border-destructive/40" : "border-foreground/20"
+      )}
+    >
+      {label && (
+        <figcaption
+          className={cn(
+            "font-mono text-[10px] tracking-[0.2em] uppercase",
+            avoid ? "text-destructive/80" : "text-muted-foreground/70"
+          )}
+        >
+          {label}
+        </figcaption>
+      )}
+      <blockquote
+        className={cn(
+          "flex flex-col gap-3 text-[15px] leading-relaxed",
+          label && "mt-3",
+          avoid ? "text-muted-foreground italic" : "text-foreground/80"
+        )}
+      >
+        {children}
+      </blockquote>
+    </figure>
   )
 }
 
@@ -68,6 +144,8 @@ type LegalPageProps = {
   sections: LegalSection[]
   /** Optional closing callout, highlighted in amber. */
   notice?: ReactNode
+  /** Eyebrow above the closing callout. */
+  noticeLabel?: string
 }
 
 export function LegalPage({
@@ -77,6 +155,7 @@ export function LegalPage({
   intro,
   sections,
   notice,
+  noticeLabel = "Important notice",
 }: LegalPageProps) {
   return (
     <div className="flex min-h-svh flex-col">
@@ -125,7 +204,7 @@ export function LegalPage({
                     >
                       <span
                         aria-hidden
-                        className="font-mono text-[11px] tabular-nums text-muted-foreground/50"
+                        className="font-mono text-[11px] text-muted-foreground/50 tabular-nums"
                       >
                         {String(i + 1).padStart(2, "0")}
                       </span>
@@ -159,7 +238,7 @@ export function LegalPage({
                 <section className="border border-amber-400/50 bg-amber-400/5 p-6 md:p-8">
                   <p className="flex items-center gap-2 font-mono text-[10px] tracking-[0.22em] text-amber-600 uppercase dark:text-amber-500">
                     <RiShieldCheckLine aria-hidden className="size-3.5" />
-                    Important notice
+                    {noticeLabel}
                   </p>
                   <div className="mt-4 flex flex-col gap-4 text-[15px] leading-relaxed text-muted-foreground">
                     {notice}
