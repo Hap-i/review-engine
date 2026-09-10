@@ -35,7 +35,7 @@ Copy `.env.example` to `.env.local` and fill it in:
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service-role key (**secret**) |
 | `DEEPSEEK_API_KEY` | DeepSeek key for review generation (**secret**) |
 | `ADMIN_TOKEN` | Password for the /admin basic-auth gate (**secret**) |
-| `NEXT_PUBLIC_BASE_URL` | Public origin, e.g. `http://localhost:3000` |
+| `NEXT_PUBLIC_BASE_URL` | Public origin for review links/QRs — `http://localhost:3000` locally, `https://onloz.com` in production (set at build) |
 
 > ⚠️ Never prefix secret vars with `NEXT_PUBLIC_` — anything with that prefix ships to the
 > browser.

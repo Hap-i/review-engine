@@ -26,3 +26,17 @@ export const CONTACT_EMAIL = "info@onloz.com"
 
 /** Subject line for the early-access request email. */
 export const EARLY_ACCESS_SUBJECT = "Onloz early access request"
+
+/* Legal entity details shown on the terms, privacy and policy pages. */
+
+/** Jurisdiction whose laws govern the Terms of Service and any dispute. */
+export const GOVERNING_LAW = "India"
+
+/** Operating entity named in the legal pages. */
+export const LEGAL_ENTITY_NAME = "Onloz"
+
+/** Registered office. Blank until finalised — the row is hidden when empty. */
+export const LEGAL_ENTITY_ADDRESS = ""
+
+/** Jurisdiction of incorporation. Blank until finalised — hidden when empty. */
+export const LEGAL_ENTITY_JURISDICTION = ""
