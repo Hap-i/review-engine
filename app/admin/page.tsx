@@ -60,28 +60,39 @@ export default async function AdminPage({
   let listTotal = 0
   let loadError: string | null = null
 
-  // Clients, Add-client, and Users tabs all surface owner info.
-  try {
-    users = await loadUsers()
-    owners = users.map(({ id, name, email }) => ({ id, name, email }))
-  } catch (err) {
-    console.error("Failed to load users", err)
-    users = []
-    owners = []
+  // Clients, Add-client, and Users tabs all surface owner info. The two loads
+  // are independent, so they run together — awaiting one after the other cost
+  // a full extra round trip on every admin navigation.
+  const [usersSettled, clientsSettled] = await Promise.allSettled([
+    loadUsers(),
+    !isUsersTab && !isAddTab
+      ? loadClients(query, requestedPage)
+      : Promise.resolve(null),
+  ])
+
+  if (usersSettled.status === "fulfilled") {
+    users = usersSettled.value
+  } else {
+    console.error("Failed to load users", usersSettled.reason)
+    if (isUsersTab) {
+      loadError = `Loading users failed: ${describeError(usersSettled.reason)}`
+    }
   }
+  owners = users.map(({ id, name, email }) => ({ id, name, email }))
 
   if (isUsersTab) {
     listTotal = users.length
-  } else if (!isAddTab) {
-    try {
-      const result = await loadClients(query, requestedPage)
-      clients = result.clients
-      reviewCounts = result.reviewCounts
-      tagsByClient = result.tagsByClient
-      listTotal = result.total
-    } catch (err) {
-      loadError = err instanceof Error ? err.message : String(err)
-    }
+  } else if (clientsSettled.status === "fulfilled" && clientsSettled.value) {
+    const result = clientsSettled.value
+    clients = result.clients
+    reviewCounts = result.reviewCounts
+    tagsByClient = result.tagsByClient
+    listTotal = result.total
+  } else if (clientsSettled.status === "rejected") {
+    loadError =
+      clientsSettled.reason instanceof Error
+        ? clientsSettled.reason.message
+        : String(clientsSettled.reason)
   }
 
   const totalPages = Math.max(1, Math.ceil(listTotal / PER_PAGE))

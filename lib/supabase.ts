@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js"
 import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
+import { cache } from "react"
 
 /**
  * Server-only Supabase clients. Never import this module from a "use client"
@@ -61,9 +62,15 @@ export async function getServerSupabase() {
   )
 }
 
-/** The logged-in owner's auth user id, or null when unauthenticated. */
-export async function getPortalUserId(): Promise<string | null> {
+/**
+ * The logged-in owner's auth user id, or null when unauthenticated.
+ *
+ * `getUser()` validates the JWT against the Supabase Auth server over the
+ * network, so it is memoized per request — the layout and the page under it
+ * would otherwise each pay a separate round trip on every navigation.
+ */
+export const getPortalUserId = cache(async (): Promise<string | null> => {
   const supabase = await getServerSupabase()
   const { data } = await supabase.auth.getUser()
   return data.user?.id ?? null
-}
+})

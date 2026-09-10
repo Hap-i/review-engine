@@ -1,5 +1,6 @@
 // Server-only helpers for the business-owner portal.
 
+import { cache } from "react"
 import { redirect } from "next/navigation"
 import { getPortalUserId, getSupabaseAdmin } from "@/lib/supabase"
 import type { Client } from "@/lib/types"
@@ -27,8 +28,12 @@ export type OwnerRecentReview = {
   clients: { business_name: string } | null
 }
 
-/** The current owner's profile, or null when logged out / not a known profile. */
-export async function getPortalOwner(): Promise<PortalOwner | null> {
+/**
+ * The current owner's profile, or null when logged out / not a known profile.
+ * Memoized per request so the portal layout and the page beneath it share one
+ * lookup instead of each issuing it.
+ */
+export const getPortalOwner = cache(async (): Promise<PortalOwner | null> => {
   const userId = await getPortalUserId()
   if (!userId) return null
 
@@ -40,7 +45,7 @@ export async function getPortalOwner(): Promise<PortalOwner | null> {
     .maybeSingle()
   if (error || !data) return null
   return data as PortalOwner
-}
+})
 
 /** Like getPortalOwner but redirects to the login page when unauthenticated. */
 export async function requireOwner(): Promise<PortalOwner> {
@@ -52,14 +57,19 @@ export async function requireOwner(): Promise<PortalOwner> {
 const OWNED_CLIENT_SELECT =
   "id, slug, business_name, business_description, google_review_url, created_at, owner_id"
 
-async function ownedClientIds(ownerId: string): Promise<string[]> {
+/**
+ * Memoized per request: the dashboard calls getOwnerTotals,
+ * getOwnerTagSummary and listOwnerRecentReviews concurrently, and without this
+ * they would each re-run the identical clients query.
+ */
+const ownedClientIds = cache(async (ownerId: string): Promise<string[]> => {
   const supabase = getSupabaseAdmin()
   const { data } = await supabase
     .from("clients")
     .select("id")
     .eq("owner_id", ownerId)
   return (data ?? []).map((row) => row.id)
-}
+})
 
 /** All clients owned by this owner, plus per-client review tallies and tags. */
 export async function getOwnedClients(ownerId: string): Promise<{
