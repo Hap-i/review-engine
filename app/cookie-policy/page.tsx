@@ -1,4 +1,3 @@
-import type { Metadata } from "next"
 import { RiArrowRightLine, RiMailLine } from "@remixicon/react"
 
 import {
@@ -15,12 +14,14 @@ import {
   LEGAL_ENTITY_JURISDICTION,
   LEGAL_ENTITY_NAME,
 } from "@/lib/site"
+import { pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
-  title: "Cookie Policy — Onloz",
+export const metadata = pageMetadata({
+  title: "Cookie Policy",
   description:
     "What cookies and similar technologies Onloz uses, why we use them, and how you can control them — including authentication, security, hosting and planned analytics.",
-}
+  path: "/cookie-policy",
+})
 
 const LAST_UPDATED = "September 10, 2026"
 

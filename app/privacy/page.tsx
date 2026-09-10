@@ -1,4 +1,3 @@
-import type { Metadata } from "next"
 import { RiArrowRightLine, RiMailLine } from "@remixicon/react"
 
 import {
@@ -16,12 +15,14 @@ import {
   LEGAL_ENTITY_JURISDICTION,
   LEGAL_ENTITY_NAME,
 } from "@/lib/site"
+import { pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
-  title: "Privacy Policy — Onloz",
+export const metadata = pageMetadata({
+  title: "Privacy Policy",
   description:
     "How Onloz collects, uses, discloses, stores, and protects personal information — for businesses using Onloz, their customers, and website visitors.",
-}
+  path: "/privacy",
+})
 
 const LAST_UPDATED = "September 10, 2026"
 

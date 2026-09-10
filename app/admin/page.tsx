@@ -8,12 +8,14 @@ import {
 import { getSupabaseAdmin } from "@/lib/supabase"
 import { cn } from "@/lib/utils"
 import { formatDate } from "@/lib/format"
+import { homeHref } from "@/lib/site"
 import { baseUrl } from "@/lib/url"
 import { AddClientForm } from "@/components/add-client-form"
 import { ClientRow } from "@/components/client-row"
 import { ClientModalScope } from "@/components/client-modal-scope"
 import { CreateUserForm } from "@/components/create-user-form"
 import { DeleteUserButton } from "@/components/delete-user-button"
+import { BrandMark } from "@/components/marketing/primitives"
 import type { Client, OwnerProfile } from "@/lib/types"
 
 export const dynamic = "force-dynamic"
@@ -112,14 +114,26 @@ export default async function AdminPage({
 
   return (
     <main className="mx-auto flex min-h-svh w-full max-w-5xl flex-col gap-8 px-6 py-10">
-      <header>
-        <h1 className="text-2xl font-bold tracking-tight">
-          Review Engine — Admin
-        </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Invite business owners, assign clients, and manage everything from one
-          place.
-        </p>
+      <header className="flex flex-wrap items-start justify-between gap-x-6 gap-y-5">
+        <div className="min-w-0">
+          <BrandMark href={homeHref()} className="mb-4" />
+          <h1 className="text-2xl font-bold tracking-tight">Admin</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Invite business owners, assign clients, and manage everything from
+            one place.
+          </p>
+        </div>
+
+        {/*
+          A plain <a>, not <Link>: signing out depends on the browser seeing a
+          real 401 document response, which client-side routing would swallow.
+        */}
+        <a
+          href="/admin/logout"
+          className="inline-flex h-9 shrink-0 items-center justify-center border border-border bg-card px-3 font-mono text-[11px] font-semibold tracking-widest text-muted-foreground uppercase transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+        >
+          Log out
+        </a>
       </header>
 
       <nav

@@ -1,4 +1,3 @@
-import type { Metadata } from "next"
 import { RiArrowRightLine, RiMailLine } from "@remixicon/react"
 
 import {
@@ -17,12 +16,14 @@ import {
   LEGAL_ENTITY_JURISDICTION,
   LEGAL_ENTITY_NAME,
 } from "@/lib/site"
+import { pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
-  title: "Terms of Service — Onloz",
+export const metadata = pageMetadata({
+  title: "Terms of Service",
   description:
     "The agreement that governs how businesses and their customers use Onloz — including acceptable use, AI-assisted content, subscriptions, third-party platforms and liability.",
-}
+  path: "/terms",
+})
 
 const LAST_UPDATED = "September 10, 2026"
 

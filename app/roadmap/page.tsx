@@ -1,4 +1,3 @@
-import type { Metadata } from "next"
 import { RiCheckLine, RiCompassLine, RiTimeLine } from "@remixicon/react"
 
 import { MarketingNav } from "@/components/marketing/nav"
@@ -9,12 +8,14 @@ import {
   SectionLabel,
 } from "@/components/marketing/primitives"
 import { CONTACT_EMAIL } from "@/lib/site"
+import { pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
-  title: "Roadmap — Onloz",
+export const metadata = pageMetadata({
+  title: "Roadmap",
   description:
     "What’s next on Onloz — review automation, WhatsApp review reminders and an advanced CRM, plus what’s already shipping today.",
-}
+  path: "/roadmap",
+})
 
 type Status = "available" | "building" | "next" | "exploring"
 

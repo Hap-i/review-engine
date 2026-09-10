@@ -1,6 +1,6 @@
-import type { Metadata } from "next"
 import { Fraunces } from "next/font/google"
 import { cn } from "@/lib/utils"
+import { pageMetadata } from "@/lib/seo"
 
 import { MarketingNav } from "@/components/marketing/nav"
 import { Hero } from "@/components/marketing/hero"
@@ -26,25 +26,18 @@ const display = Fraunces({
   variable: "--font-display",
 })
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Onloz — Turn customer feedback into reviews",
   description:
     "Onloz helps customers turn their genuine experience into a polished review in seconds — without staring at a blank text box. Less typing. More reviews. Less friction.",
-  keywords: [
-    "customer reviews",
-    "Google reviews",
-    "review generation",
-    "customer feedback",
-    "QR code reviews",
-  ],
+  path: "/",
+  // The title is the brand tagline, so it opts out of the "%s | Onloz" suffix.
+  absoluteTitle: true,
   openGraph: {
-    title: "Onloz — Turn customer feedback into reviews",
     description:
       "More customers have something to say. Make it easy for them to say it.",
-    type: "website",
-    siteName: "Onloz",
   },
-}
+})
 
 export default function HomePage() {
   return (

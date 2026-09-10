@@ -7,6 +7,8 @@
  * separately and the login link will point there instead.
  */
 
+import { baseUrl } from "@/lib/url"
+
 const appOrigin = (
   process.env.NEXT_PUBLIC_APP_URL ?? ""
 ).replace(/\/+$/, "")
@@ -19,6 +21,18 @@ export function appUrl(): string {
 /** Where the "Log in" nav item should point. */
 export function signInHref(): string {
   return appOrigin ? `${appOrigin}/portal/login` : "/portal/login"
+}
+
+/**
+ * Where the Onloz logo points from inside the app (portals, admin, sign-in).
+ *
+ * On the app origin, "/" is redirected straight back to the sign-in page by
+ * proxy.ts — so a logo linking to "/" would be a no-op there. In production the
+ * logo must therefore point absolutely at the public marketing site. Locally
+ * both sites share an origin, so a relative "/" keeps client-side navigation.
+ */
+export function homeHref(): string {
+  return process.env.NODE_ENV === "production" ? baseUrl() : "/"
 }
 
 /** Email used for the invite-only early-access flow. */

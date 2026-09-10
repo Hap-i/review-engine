@@ -87,22 +87,10 @@ export function MarketingFooter() {
           </nav>
         </div>
 
-        <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-border pt-6 sm:flex-row sm:items-center">
+        <div className="mt-14 border-t border-border pt-6">
           <p className="font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
             © 2026 Onloz. All rights reserved.
           </p>
-          <div className="flex items-center gap-5 font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase">
-            {["LinkedIn", "X", "Instagram"].map((social) => (
-              <a
-                key={social}
-                href="#"
-                aria-disabled
-                className="cursor-not-allowed transition-colors hover:text-foreground"
-              >
-                {social}
-              </a>
-            ))}
-          </div>
         </div>
       </Container>
     </footer>

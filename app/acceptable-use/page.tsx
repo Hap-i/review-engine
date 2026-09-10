@@ -1,4 +1,3 @@
-import type { Metadata } from "next"
 import { RiArrowRightLine, RiMailLine } from "@remixicon/react"
 
 import {
@@ -12,12 +11,14 @@ import {
   type LegalSection,
 } from "@/components/marketing/legal"
 import { CONTACT_EMAIL } from "@/lib/site"
+import { pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
-  title: "Acceptable Use Policy — Onloz",
+export const metadata = pageMetadata({
+  title: "Acceptable Use Policy",
   description:
     "What’s allowed on Onloz — and what isn’t. Genuine experiences, honest ratings, no fake or incentivized reviews, and the technical and legal limits on using the Service.",
-}
+  path: "/acceptable-use",
+})
 
 const LAST_UPDATED = "September 10, 2026"
 

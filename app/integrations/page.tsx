@@ -1,11 +1,12 @@
-import type { Metadata } from "next"
 import { ComingSoon } from "@/components/marketing/coming-soon"
+import { pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
-  title: "Integrations — coming soon | Onloz",
+export const metadata = pageMetadata({
+  title: "Integrations — coming soon",
   description:
     "The review destinations and tools Onloz connects to — Google Reviews first, with more integrations to follow.",
-}
+  path: "/integrations",
+})
 
 export default function IntegrationsPage() {
   return (

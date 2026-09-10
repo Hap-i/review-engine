@@ -4,6 +4,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { RiDashboardLine, RiStoreLine } from "@remixicon/react"
 import { logoutUser } from "@/app/portal/actions"
+import { BrandMark } from "@/components/marketing/primitives"
+import { homeHref } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
 type PortalNavProps = {
@@ -27,13 +29,16 @@ export function PortalNav({ name, email }: PortalNavProps) {
     <div className="border-b border-border bg-card">
       {/* Account row */}
       <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-6 px-6 pt-5 pb-5">
-        <div className="min-w-0">
-          <p className="truncate text-sm leading-tight font-semibold">
-            {name}
-          </p>
-          <p className="mt-1 truncate text-xs text-muted-foreground">
-            {email}
-          </p>
+        <div className="flex min-w-0 items-center gap-4">
+          <BrandMark href={homeHref()} className="shrink-0" />
+          <div className="min-w-0 border-l border-border pl-4">
+            <p className="truncate text-sm leading-tight font-semibold">
+              {name}
+            </p>
+            <p className="mt-1 truncate text-xs text-muted-foreground">
+              {email}
+            </p>
+          </div>
         </div>
         <form action={logoutUser} className="shrink-0">
           <button

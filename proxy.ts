@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
+import { APP_HOST, MARKETING_HOST, normalizeHost } from "@/lib/hosts"
 
 /**
  * One Next.js deployment serves two origins, routed by the request Host:
@@ -13,11 +14,10 @@ import type { NextRequest } from "next/server"
  * owns it. Unknown hosts — localhost, 127.0.0.1, Vercel preview deploys —
  * keep every route so local development and ephemeral deploys are unchanged.
  *
- * Override the hostnames with ONLOZ_APP_HOST / ONLOZ_MARKETING_HOST.
+ * Override the hostnames with ONLOZ_APP_HOST / ONLOZ_MARKETING_HOST. They are
+ * defined in lib/hosts.ts alongside robots.ts, which keys its crawl rules off
+ * the same split.
  */
-
-const APP_HOST = process.env.ONLOZ_APP_HOST ?? "app.onloz.com"
-const MARKETING_HOST = process.env.ONLOZ_MARKETING_HOST ?? "onloz.com"
 
 /**
  * Marketing is the apex domain plus www only — NOT its subdomains, otherwise
@@ -31,7 +31,7 @@ function matchesMarketing(hostname: string) {
 
 export function proxy(request: NextRequest) {
   const { pathname, search, protocol } = request.nextUrl
-  const hostname = (request.headers.get("host") ?? "").toLowerCase().split(":")[0]
+  const hostname = normalizeHost(request.headers.get("host"))
 
   const isAppHost = hostname === APP_HOST
   const isMarketingHost = matchesMarketing(hostname)
@@ -48,8 +48,8 @@ export function proxy(request: NextRequest) {
   // The app host only serves the core application. Its root lands on the
   // portal sign-in; anything else is pushed back to the marketing site.
   if (isAppHost) {
-    if (isAdmin) return adminGate(request)
-    if (isPortal) return NextResponse.next()
+    if (isAdmin) return noindex(adminGate(request))
+    if (isPortal) return noindex(NextResponse.next())
     if (pathname === "/") {
       return redirectTo(protocol, APP_HOST, "/portal/login", "")
     }
@@ -60,6 +60,18 @@ export function proxy(request: NextRequest) {
   if (isAdmin) return adminGate(request)
 
   return NextResponse.next()
+}
+
+/**
+ * Marks a response as uncrawlable. The app subdomain has no content worth
+ * indexing — just a sign-in form and an admin tool — while the marketing host
+ * beside it wants everything found. robots.txt carries the same split, but a
+ * Disallow only stops the crawl; if a crawler reaches the page another way, the
+ * header is what actually keeps it out of the index.
+ */
+function noindex(response: NextResponse): NextResponse {
+  response.headers.set("X-Robots-Tag", "noindex, nofollow")
+  return response
 }
 
 function redirectTo(

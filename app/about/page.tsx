@@ -1,4 +1,3 @@
-import type { Metadata } from "next"
 import { RiMapPinLine, RiStarFill } from "@remixicon/react"
 
 import { MarketingNav } from "@/components/marketing/nav"
@@ -9,12 +8,14 @@ import {
   SectionLabel,
 } from "@/components/marketing/primitives"
 import { CONTACT_EMAIL } from "@/lib/site"
+import { pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
-  title: "About — Onloz",
+export const metadata = pageMetadata({
+  title: "About",
   description:
     "Why Onloz exists, what we’re building toward, and the founder behind it — Suvendu Sekhar Sahoo, based in Bangalore, India.",
-}
+  path: "/about",
+})
 
 const PRINCIPLES = [
   {

@@ -1,4 +1,3 @@
-import type { Metadata } from "next"
 import { RiArrowRightLine, RiMailLine } from "@remixicon/react"
 
 import {
@@ -14,12 +13,14 @@ import {
 } from "@/components/marketing/legal"
 import { Stars } from "@/components/marketing/primitives"
 import { CONTACT_EMAIL } from "@/lib/site"
+import { pageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
-  title: "Review & AI Usage Guidelines — Onloz",
+export const metadata = pageMetadata({
+  title: "Review & AI Usage Guidelines",
   description:
     "How businesses and customers may use Onloz responsibly — the rules around genuine experiences, AI-assisted drafting, ratings, incentives and third-party review platforms.",
-}
+  path: "/review-ai-guidelines",
+})
 
 const LAST_UPDATED = "September 10, 2026"
 

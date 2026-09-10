@@ -1,6 +1,9 @@
+import { cache } from "react"
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getSupabaseAnon } from "@/lib/supabase"
 import { ReviewLanding } from "@/components/review-landing"
+import { pageMetadata } from "@/lib/seo"
 
 export const dynamic = "force-dynamic"
 
@@ -8,6 +11,28 @@ type ClientRow = {
   id: string
   business_name: string
   google_review_url: string
+}
+
+/**
+ * Titled per business so the link a customer is handed reads as that business's
+ * page rather than Onloz's. These landings live on the marketing host and are
+ * meant to be findable (see robots.ts).
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const client = await getClientBySlug(slug)
+
+  if (!client) return {}
+
+  return pageMetadata({
+    title: `${client.business_name} — Share your experience`,
+    description: `Been to ${client.business_name}? Tell them how it went — Onloz helps you put it into words in a few taps.`,
+    path: `/r/${slug}`,
+  })
 }
 
 /** How many tags from the owner's list to show a reviewer. */
@@ -35,20 +60,26 @@ export default async function ReviewPage({
   )
 }
 
-async function getClientBySlug(slug: string): Promise<ClientRow | null> {
-  const supabase = getSupabaseAnon()
-  const { data, error } = await supabase
-    .from("clients")
-    .select("id, business_name, google_review_url")
-    .eq("slug", slug)
-    .maybeSingle()
+/**
+ * Wrapped in cache() so generateMetadata and the page body share one query
+ * instead of hitting Supabase twice for the same row within a request.
+ */
+const getClientBySlug = cache(
+  async (slug: string): Promise<ClientRow | null> => {
+    const supabase = getSupabaseAnon()
+    const { data, error } = await supabase
+      .from("clients")
+      .select("id, business_name, google_review_url")
+      .eq("slug", slug)
+      .maybeSingle()
 
-  if (error) {
-    console.error("Failed to load client", error)
-    return null
+    if (error) {
+      console.error("Failed to load client", error)
+      return null
+    }
+    return data
   }
-  return data
-}
+)
 
 /** Fetch the client's tags and pick TAGS_TO_SHOW at random, once per page load. */
 async function sampleTags(clientId: string): Promise<string[]> {
