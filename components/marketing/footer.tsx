@@ -20,7 +20,6 @@ const COLUMNS: { heading: string; links: FooterLink[] }[] = [
       { label: "Help Center", href: "/help" },
       { label: "Review Guide", href: "/review-guide" },
       { label: "Blog", href: "/blog" },
-      { label: "Customer Feedback Guide", href: "/customer-feedback-guide" },
     ],
   },
   {

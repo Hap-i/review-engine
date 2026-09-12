@@ -18,12 +18,10 @@ const PAGES: {
   changeFrequency: ChangeFrequency
 }[] = [
   { path: "/", priority: 1, changeFrequency: "weekly" },
-  { path: "/integrations", priority: 0.7, changeFrequency: "monthly" },
   { path: "/roadmap", priority: 0.5, changeFrequency: "monthly" },
   { path: "/help", priority: 0.7, changeFrequency: "weekly" },
   { path: "/review-guide", priority: 0.8, changeFrequency: "monthly" },
   { path: "/blog", priority: 0.7, changeFrequency: "weekly" },
-  { path: "/customer-feedback-guide", priority: 0.7, changeFrequency: "monthly" },
   { path: "/about", priority: 0.6, changeFrequency: "monthly" },
   { path: "/terms", priority: 0.3, changeFrequency: "yearly" },
   { path: "/privacy", priority: 0.3, changeFrequency: "yearly" },
