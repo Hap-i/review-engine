@@ -1,5 +1,6 @@
 import { RiMailLine } from "@remixicon/react"
 import { Container, BrandMark } from "@/components/marketing/primitives"
+import { ProductHuntBadge } from "@/components/marketing/product-hunt-badge"
 import { CONTACT_EMAIL } from "@/lib/site"
 
 type FooterLink = { label: string; href: string }
@@ -58,6 +59,9 @@ export function MarketingFooter() {
               <RiMailLine aria-hidden className="size-4" />
               {CONTACT_EMAIL}
             </a>
+            <div className="mt-7">
+              <ProductHuntBadge />
+            </div>
           </div>
 
           <nav

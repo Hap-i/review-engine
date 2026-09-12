@@ -6,6 +6,7 @@ import {
   RiStarFill,
 } from "@remixicon/react"
 import { Container, CtaLink, Stars } from "@/components/marketing/primitives"
+import { ProductHuntBadge } from "@/components/marketing/product-hunt-badge"
 
 const CHIPS = ["Food", "Service", "Delivery", "Quality", "Value", "Atmosphere"]
 const SELECTED = ["Food", "Service", "Delivery"]
@@ -57,6 +58,10 @@ export function Hero() {
             No credit card required&ensp;·&ensp;Set up in minutes&ensp;·&ensp;
             Works with Google Reviews
           </p>
+
+          <div className="rise mt-8" style={{ animationDelay: "260ms" }}>
+            <ProductHuntBadge />
+          </div>
         </div>
 
         {/* Phone mock */}

@@ -41,6 +41,22 @@ export const CONTACT_EMAIL = "info@onloz.com"
 /** Subject line for the early-access request email. */
 export const EARLY_ACCESS_SUBJECT = "Onloz early access request"
 
+/* Product Hunt launch post. */
+
+/**
+ * Launch post the badge links to. The query string is the attribution Product
+ * Hunt's embed generator produced — keep it intact so referrals stay credited.
+ */
+export const PRODUCT_HUNT_URL =
+  "https://www.producthunt.com/products/onloz?utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-onloz"
+
+/** Post ID the badge widget renders for. */
+export const PRODUCT_HUNT_POST_ID = "1248689"
+
+/** Alt text supplied with the embed. */
+export const PRODUCT_HUNT_BADGE_ALT =
+  "Onloz - Turn happy customers into more genuine Google reviews. | Product Hunt"
+
 /* Legal entity details shown on the terms, privacy and policy pages. */
 
 /** Jurisdiction whose laws govern the Terms of Service and any dispute. */
